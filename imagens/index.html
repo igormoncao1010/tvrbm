@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV RBM</title>
+  <style>
+    /* RESET BÁSICO */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    body { background-color: #f5f5f5; color: #333; }
+
+    /* HEADER */
+    header {
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .logo img { height: 50px; }
+
+    nav { display: flex; gap: 20px; }
+
+    nav a { color: black; text-decoration: none; font-weight: bold; transition: color 0.3s; }
+
+    nav a:hover { color: blue; }
+
+    /* MENU HAMBURGUER */
+    .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+    .hamburger div { width: 25px; height: 3px; background-color: black; transition: all 0.3s; }
+
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100%;
+        width: 250px;
+        background-color: green;
+        flex-direction: column;
+        padding-top: 60px;
+        transition: left 0.3s;
+      }
+      nav.active { left: 0; }
+      .hamburger { display: flex; }
+    }
+
+    /* CARROSSEL */
+    .carousel {
+      position: relative;
+      width: 100%;
+      margin-top: 0; /* slide grudado no menu */
+      overflow: hidden;
+    }
+
+    .slides { display: flex; transition: transform 0.5s ease-in-out; }
+    .slide { min-width: 100%; }
+    .slide img { width: 100%; display: block; }
+
+    /* BOTÕES DO SLIDE */
+    .carousel button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 24px;
+      z-index: 10;
+    }
+    .carousel .prev { left: 10px; }
+    .carousel .next { right: 10px; }
+    .carousel button:hover { background-color: rgba(0,0,0,0.7); }
+
+    /* SEÇÃO DE NOTÍCIAS */
+    main { padding: 20px; }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+      gap: 20px;
+    }
+    .news-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .news-item:hover { transform: translateY(-5px); }
+    .news-item img { width: 100%; border-radius: 5px; margin-bottom: 10px; }
+
+    /* RODAPÉ */
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+
+
+
+
+
+
+.cotacoes {
+  background-color: #000;
+  display: flex;
+  justify-content: space-around; /* mantido para desktop */
+  align-items: center;
+  padding: 6px 10px;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Itens de cada cotação */
+.cotacao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.moeda { font-weight: bold; }
+.valor { display: inline-block; }
+.seta { font-size: 1rem; }
+.alta { color: #00ff00; }
+.baixa { color: #ff0000; }
+
+/* MOBILE: linha única com scroll horizontal */
+@media (max-width: 768px) {
+  .cotacoes {
+    justify-content: flex-start; /* alinha à esquerda */
+    overflow-x: auto;           /* scroll horizontal */
+    white-space: nowrap;        /* força linha única */
+    padding: 5px 8px;
+  }
+  .cotacao {
+    display: inline-flex;
+    margin-right: 15px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cotacoes { padding: 4px 5px; font-size: 0.8rem; }
+  .cotacao { margin-right: 12px; gap: 4px; }
+}
+
+
+
+
+
+.materia-destaque {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: #fff;
+    color: #000;
+    font-family: Arial, sans-serif;
+  }
+
+  .materia-imagem img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .materia-conteudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 600px;
+  }
+
+  .materia-titulo {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #111;
+  }
+
+  .materia-resumo {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+
+  .materia-link {
+    color: #10B55D;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .materia-link:hover {
+    color: #900;
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .materia-destaque {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .materia-imagem img {
+      max-width: 100%;
+    }
+
+    .materia-conteudo {
+      max-width: 100%;
+    }
+
+    .materia-titulo {
+      font-size: 1.5rem;
+    }
+
+    .materia-resumo {
+      font-size: 0.95rem;
+    }
+  }
+
+
+
+
+
+  .materias {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.materia-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.materia-card img {
+  width: 100%;
+  display: block;
+  border-bottom: 4px solid transparent;
+}
+
+.materia-card .categoria {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 10px 20px;
+  border-bottom: 2px solid currentColor;
+  display: inline-block;
+}
+
+.materia-card .conteudo {
+  padding: 15px 20px;
+}
+
+.materia-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.materia-card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Categorias */
+.jornalismo .categoria { color: #006FC9; }
+.jornalismo img { border-bottom-color: #006FC9; }
+
+.esporte .categoria { color: #10B55D; }
+.esporte img { border-bottom-color: #10B55D; }
+
+.entretenimento .categoria { color: #FFCD29; }
+.entretenimento img { border-bottom-color: #FFCD29; }
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .materias {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+
+
+
+.videos {
+  padding: 40px 20px;
+}
+
+.videos h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #333;
+  display: inline-block;
+}
+
+.videos-container {
+  display: flex;
+  gap: 20px;
+}
+
+.video-principal {
+  flex: 2;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-principal video {
+  width: 100%;
+  display: block;
+}
+
+.video-principal .descricao {
+  background: #111;
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 0.95rem;
+}
+
+.video-lista {
+  flex: 1;
+  background: #2c2c2c;
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.video-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #3b3b3b;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.video-item:hover {
+  background: #444;
+}
+
+.video-item img {
+  width: 90px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.video-item .info {
+  flex: 1;
+  color: #fff;
+}
+
+.video-item .tempo {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.video-item p {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+/* destaque do vídeo que está tocando */
+.video-item.ativo {
+  border: 2px solid #006FC9;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .videos-container {
+    flex-direction: column;
+  }
+
+  .video-lista {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 10px;
+  }
+
+  .video-item {
+    min-width: 200px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .video-item img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+
+
+
+.sua-regiao {
+  padding: 40px 20px;
+}
+
+.sua-regiao h2 {
+  font-size: 1.8rem;
+  color: black;
+  border-bottom: 2px solid black;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.noticias-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.noticia-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.noticia-card:hover {
+  transform: translateY(-5px);
+}
+
+.noticia-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.noticia-card h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #006FC9;
+  margin: 10px;
+}
+
+.noticia-card p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 10px 15px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .noticias-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="imagens/logos/01.png" alt="TV RBM Logo">
+    </div>
+    <nav id="nav">
+      <a href="#">Home</a>
+      <a href="#">Notícias</a>
+      <a href="#">Programas</a>
+      <a href="#">Vídeos</a>
+      <a href="#">Contato</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+
+
+
+
+
+
+<!-- Barra de Cotações Minimalista em Linha Única Responsiva -->
+<section class="cotacoes">
+  <div class="cotacao">
+    <span class="moeda">AU</span>
+    <span class="valor" id="valor-ouro">Carregando...</span>
+    <span class="seta" id="seta-ouro">↔️</span>
+  </div>
+  <div class="cotacao">
+    <span class="moeda">USD</span>
+    <span class="valor" id="valor-dolar">Carregando...</span>
+    <span class="seta" id="seta-dolar">↔️</span>
+  </div>
+  <div class="cotacao">
+    <span class="moeda">EUR</span>
+    <span class="valor" id="valor-euro">Carregando...</span>
+    <span class="seta" id="seta-euro">↔️</span>
+  </div>
+  <div class="cotacao">
+    <span class="moeda">BTC</span>
+    <span class="valor" id="valor-bitcoin">Carregando...</span>
+    <span class="seta" id="seta-bitcoin">↔️</span>
+  </div>
+</section>
+
+
+
+
+
+
+
+  <!-- CARROSSEL -->
+  <section class="carousel">
+    <div class="slides">
+      <div class="slide">
+        <picture>
+          <source media="(max-width: 768px)" srcset="imagens/banners/04.png">
+          <img src="imagens/banners/01.png" alt="Slide 1">
+        </picture>
+      </div>
+      <div class="slide">
+        <picture>
+          <source media="(max-width: 768px)" srcset="imagens/banners/05.png">
+          <img src="imagens/banners/02.png" alt="Slide 2">
+        </picture>
+      </div>
+      <div class="slide">
+        <picture>
+          <source media="(max-width: 768px)" srcset="imagens/banners/06.png">
+          <img src="imagens/banners/03.png" alt="Slide 3">
+        </picture>
+      </div>
+    </div>
+
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+  </section>
+
+
+
+
+
+  <!-- Matéria de Destaque -->
+<section class="materia-destaque">
+  <div class="materia-imagem">
+    <img src="imagens/materias/05.png" alt="Imagem da matéria">
+  </div>
+  <div class="materia-conteudo">
+    <h2 class="materia-titulo">Polarização e Reformas: o cenário político brasileiro em 2025</h2>
+    <p class="materia-resumo">
+      O Brasil atravessa um momento de intensos debates políticos. No Congresso Nacional, pautas ligadas à reforma tributária, à modernização administrativa e ao financiamento de programas sociais dividem opiniões e movimentam as bancadas.<br><br>
+      De um lado, partidos do governo buscam consolidar alianças para garantir a aprovação de projetos considerados essenciais para a economia. Do outro, a oposição pressiona por maior transparência nos gastos e defende ajustes que reduzam a carga sobre a população.
+    </p>
+    <a href="#" class="materia-link">Leia mais →</a>
+  </div>
+</section>
+
+
+
+
+
+
+<section class="materias">
+  <div class="materia-card jornalismo">
+    <h2 class="categoria">Jornalismo</h2>
+    <img src="imagens/materias/06.png" alt="Notícia de Jornalismo">
+    <div class="conteudo">
+      <h3>Corte de cabelo levou à descoberta de tumor na cabeça do filho de Safadão</h3>
+      <p>Notícias</p>
+    </div>
+  </div>
+
+  <div class="materia-card esporte">
+    <h2 class="categoria">Esporte</h2>
+    <img src="imagens/materias/07.png" alt="Notícia de Esporte">
+    <div class="conteudo">
+      <h3>Entenda por que camisa do Santos terá cicatriz no lugar de patrocínio</h3>
+      <p>Esportes</p>
+    </div>
+  </div>
+
+  <div class="materia-card entretenimento">
+    <h2 class="categoria">Entretenimento</h2>
+    <img src="imagens/materias/08.png" alt="Notícia de Entretenimento">
+    <div class="conteudo">
+      <h3>Ju Paes samba muito, dá beijão e aposta em look deslumbrante na Viradouro</h3>
+      <p>Atualidades</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+  <!-- GRID DE NOTÍCIAS -->
+  <main>
+    <div class="news-grid">
+      <div class="news-item">
+        <img src="imagens/materias/01.png" alt="Notícia 1">
+        <h3>TV RBM lança novo programa de variedades para todo o Brasil</h3><br>
+        <p>A emissora estreia um programa que mistura entrevistas, cultura e entretenimento, trazendo conteúdos exclusivos e participações especiais. Não perca a estreia na próxima segunda-feira.</p>
+      </div>
+      <div class="news-item">
+        <img src="imagens/materias/02.png" alt="Notícia 2">
+        <h3>Como a tecnologia está transformando a TV aberta no Brasil</h3><br>
+        <p>Aplicativos, streaming e interação digital estão revolucionando a forma como o público acompanha programas ao vivo. Conheça as novidades que chegam à sua tela.</p>
+      </div>
+      <div class="news-item">
+        <img src="imagens/materias/03.png" alt="Notícia 3">
+        <h3>Festival de Música Local atrai milhares de fãs</h3><br>
+        <p>O evento que celebra artistas regionais movimentou a cidade com shows, workshops e experiências interativas para toda a família.</p>
+      </div>
+      
+    </div>
+  </main>
+
+
+
+
+
+
+
+
+  <section class="videos">
+  <h2>Vídeos em alta hoje</h2>
+  <div class="videos-container">
+    <!-- Vídeo principal -->
+    <div class="video-principal">
+      <video controls poster="imagens/thumb/01.png">
+        <source src="videos/video1.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos.
+      </video>
+      <p class="descricao">Ministros do STF avaliam decisão de Flávio Dino que suspendeu investigação contra Ayres</p>
+    </div>
+
+    <!-- Lista lateral -->
+    <div class="video-lista">
+      <div class="video-item ativo">
+        <img src="imagens/thumb/02.png" alt="Thumb vídeo 1">
+        <div class="info">
+          <span class="tempo">1 min</span>
+          <p>Ministro Luiz Fux vota para absolver dois réus de atos golpistas</p>
+        </div>
+      </div>
+
+      <div class="video-item">
+        <img src="imagens/thumb/03.png" alt="Thumb vídeo 2">
+        <div class="info">
+          <span class="tempo">19 seg</span>
+          <p>Médico morre em colisão de moto com caminhão na BR-343, no Piauí</p>
+        </div>
+      </div>
+
+      <div class="video-item">
+        <img src="imagens/thumb/04.png" alt="Thumb vídeo 3">
+        <div class="info">
+          <span class="tempo">2 min</span>
+          <p>Fux vota para absolver dois réus do 8 de Janeiro por crimes contra a democracia</p>
+        </div>
+      </div>
+
+      <div class="video-item">
+        <img src="imagens/thumb/05.png" alt="Thumb vídeo 4">
+        <div class="info">
+          <span class="tempo">2 min</span>
+          <p>Professor de jiu-jitsu é preso em Salvador por suspeita de abuso de menores</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<section class="sua-regiao">
+  <h2>Sua região <span></span></h2>
+  <div class="noticias-container">
+    <div class="noticia-card">
+      <img src="imagens/local/01.png" alt="Brasília">
+      <h3>GDF anuncia novo pacote de obras para mobilidade urbana</h3>
+      <p>Brasília · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/02.png" alt="Rio de Janeiro">
+      <h3>Rio de Janeiro registra queda no índice de criminalidade em 2025</h3>
+      <p>Rio de Janeiro · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/03.png" alt="São Paulo">
+      <h3>São Paulo terá novo sistema de transporte integrado até 2026</h3>
+      <p>São Paulo · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/04.png" alt="Belo Horizonte">
+      <h3>Belo Horizonte amplia rede de hospitais municipais</h3>
+      <p>Belo Horizonte · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/05.png" alt="Salvador">
+      <h3>Salvador terá carnaval fora de época em novembro</h3>
+      <p>Salvador · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/06.png" alt="Recife">
+      <h3>Recife inaugura novo centro de tecnologia no Porto Digital</h3>
+      <p>Recife · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/07.png" alt="Curitiba">
+      <h3>Curitiba lança programa de incentivo ao carro elétrico</h3>
+      <p>Curitiba · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/08.png" alt="Fortaleza">
+      <h3>Fortaleza recebe festival internacional de cinema</h3>
+      <p>Fortaleza · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/09.png" alt="Manaus">
+      <h3>Manaus amplia zonas de proteção ambiental</h3>
+      <p>Manaus · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/10.png" alt="Goiânia">
+      <h3>Goiânia investe em ciclovias e mobilidade sustentável</h3>
+      <p>Goiânia · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/11.png" alt="Porto Alegre">
+      <h3>Porto Alegre recebe novas linhas de metrô</h3>
+      <p>Porto Alegre · TV RBM</p>
+    </div>
+
+    <div class="noticia-card">
+      <img src="imagens/local/12.png" alt="Natal">
+      <h3>Natal reforça segurança para a alta temporada do turismo</h3>
+      <p>Natal · TV RBM</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+  <!-- RODAPÉ -->
+  <footer>
+    &copy; 2025 TV RBM. Todos os direitos reservados.
+  </footer>
+
+  <!-- JS -->
+  <script>
+    // Menu Hamburguer
+    const hamburger = document.getElementById('hamburger');
+    const nav = document.getElementById('nav');
+    hamburger.addEventListener('click', () => { nav.classList.toggle('active'); });
+
+    // Carrossel
+    const slides = document.querySelector('.slides');
+    const slide = document.querySelectorAll('.slide');
+    const prev = document.querySelector('.prev');
+    const next = document.querySelector('.next');
+    let index = 0;
+    function showSlide(i) {
+      if (i < 0) index = slide.length - 1;
+      else if (i >= slide.length) index = 0;
+      else index = i;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }
+    prev.addEventListener('click', () => showSlide(index - 1));
+    next.addEventListener('click', () => showSlide(index + 1));
+    setInterval(() => showSlide(index + 1), 5000);
+
+
+
+
+
+
+    async function obterCotacoes() {
+    try {
+      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,XAU-BRL,BTC-BRL');
+      const dados = await response.json();
+
+      function atualizar(idValor, idSeta, dado) {
+        document.getElementById(idValor).textContent = `R$ ${parseFloat(dado.high).toFixed(2)}`;
+        document.getElementById(idSeta).textContent = dado.pctChange > 0 ? '🔼' : '🔽';
+        document.getElementById(idSeta).className = dado.pctChange > 0 ? 'alta' : 'baixa';
+      }
+
+      atualizar('valor-dolar', 'seta-dolar', dados.USDBRL);
+      atualizar('valor-euro', 'seta-euro', dados.EURBRL);
+      atualizar('valor-ouro', 'seta-ouro', dados.XAU);
+      atualizar('valor-bitcoin', 'seta-bitcoin', dados.BTCBRL);
+
+    } catch (erro) {
+      console.error('Erro ao obter cotações:', erro);
+    }
+  }
+
+  obterCotacoes();
+  setInterval(obterCotacoes, 60000);
+  </script>
+
+</body>
+</html>
