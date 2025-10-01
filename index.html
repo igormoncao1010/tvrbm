@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TV RBM - Notícias</title>
+  <title>TV RBM</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
     body { background: #fff; }
@@ -59,6 +59,7 @@
 
     /* AO VIVO */
     .live-btn {
+      text-decoration: none;
       display: flex;
       align-items: center;
       background: #d32f2f;
@@ -1347,6 +1348,7 @@
         }
         
         .live-badge {
+            text-decoration: none;
             background: linear-gradient(135deg, #c00, #a00);
             color: white;
             padding: 5px 15px;
@@ -1366,6 +1368,7 @@
         }
         
         .live-badge::before {
+          text-decoration: none;
             content: '';
             width: 10px;
             height: 10px;
@@ -1404,6 +1407,10 @@
                 padding: 12px;
             }
         }
+
+        .vivo{
+          text-decoration: none;
+        }
   </style>
 </head>
 <body>
@@ -1414,13 +1421,13 @@
 
     <nav>
       <ul>
-        <li><a href="#">Início</a></li>
+        <li><a href="index.html">Início</a></li>
         <li class="has-sub">
-          <a href="#">Notícias <span class="arrow">▶</span></a>
+          <a href="noticias.html">Notícias <span class="arrow">▶</span></a>
           <ul>
-            <li><a href="#">Política</a></li>
-            <li><a href="#">Esportes</a></li>
-            <li><a href="#">Cultura</a></li>
+            <li><a href="noticias.html">Política</a></li>
+            <li><a href="noticias.html">Esportes</a></li>
+            <li><a href="notícias.html">Cultura</a></li>
           </ul>
         </li>
         <li class="has-sub">
@@ -1434,9 +1441,9 @@
       </ul>
     </nav>
 
-    <div class="live-btn">
-      <span class="dot"></span> AO VIVO
-    </div>
+           <a class="vivo" href="aovivo.html" class="link-sem-estilo">
+  <div class="live-badge">AO VIVO</div>
+</a>
 
     <div class="hamburger" onclick="toggleMenu(this)">
       <div></div><div></div><div></div>
@@ -1571,7 +1578,7 @@
 
       <!-- Lista lateral -->
       <div class="video1-lista">
-        <div class="video1-item video1-ativo" data-video="dQw4w9WgXcQ" data-desc="Ministros do STF avaliam decisão de Flávio Dino que suspendeu investigação contra Ayres">
+        <div class="video1-item video1-ativo" data-video="#" data-desc="Ministros do STF avaliam decisão de Flávio Dino que suspendeu investigação contra Ayres">
           <img src="imagens/thumb/02.png" alt="Thumb vídeo 1">
           <div class="video1-info">
             <span class="video1-tempo">1 min</span>
@@ -1579,7 +1586,7 @@
           </div>
         </div>
 
-        <div class="video1-item" data-video="d1YBv2mWll0" data-desc="Médico morre em colisão de moto com caminhão na BR-343, no Piauí">
+        <div class="video1-item" data-video="#" data-desc="Médico morre em colisão de moto com caminhão na BR-343, no Piauí">
           <img src="imagens/thumb/03.png" alt="Thumb vídeo 2">
           <div class="video1-info">
             <span class="video1-tempo">19 seg</span>
@@ -1587,7 +1594,7 @@
           </div>
         </div>
 
-        <div class="video1-item" data-video="9bZkp7q19f0" data-desc="Fux vota para absolver dois réus do 8 de Janeiro por crimes contra a democracia">
+        <div class="video1-item" data-video="#" data-desc="Fux vota para absolver dois réus do 8 de Janeiro por crimes contra a democracia">
           <img src="imagens/thumb/04.png" alt="Thumb vídeo 3">
           <div class="video1-info">
             <span class="video1-tempo">2 min</span>
@@ -1595,7 +1602,7 @@
           </div>
         </div>
 
-        <div class="video1-item" data-video="kJQP7kiw5Fk" data-desc="Professor de jiu-jitsu é preso em Salvador por suspeita de abuso de menores">
+        <div class="video1-item" data-video="#" data-desc="Professor de jiu-jitsu é preso em Salvador por suspeita de abuso de menores">
           <img src="imagens/thumb/05.png" alt="Thumb vídeo 4">
           <div class="video1-info">
             <span class="video1-tempo">2 min</span>
@@ -1734,7 +1741,9 @@
                     <img src="imagens/logos/01.png" alt="TV RBM" class="logo-img">
                 </div>
                 <p class="footer-slogan">Sua janela para o mundo - Notícias que importam</p>
-                <div class="live-badge">AO VIVO AGORA</div>
+              <a class="vivo" href="aovivo.html" class="link-sem-estilo">
+  <div class="live-badge">AO VIVO AGORA</div>
+</a>
                 
                 <div class="social-icons">
                     <a href="#" class="social-icon">f</a>

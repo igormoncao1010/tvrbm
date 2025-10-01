@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV RBM Online</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(180deg, #0c0c0c, #1a1a1a);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      width: 100%;
+      background-color: rgba(10,10,10,0.95);
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header img {
+      max-width: 180px;
+      height: auto;
+      transition: transform 0.3s;
+    }
+
+    header img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Container do vídeo */
+    .video-container {
+      width: 90%;
+      max-width: 960px;
+      margin: 40px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    video:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      background-color: rgba(10,10,10,0.95);
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.7);
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      header img {
+        max-width: 140px;
+      }
+
+      .video-container {
+        margin: 20px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="Imagens/logos/01.png" alt="Logo TV RBM">
+  </header>
+
+  <div class="video-container">
+    <video id="tvRBM" controls autoplay>
+      <source src="https://link-do-streaming-da-tv-rbm/stream.m3u8" type="application/x-mpegURL">
+      Seu navegador não suporta reprodução de vídeo.
+    </video>
+  </div>
+
+  <footer>
+    © 2025 TV RBM - Todos os direitos reservados
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const video = document.getElementById('tvRBM');
+    const videoSrc = video.querySelector('source').src;
+
+    if(Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+      video.addEventListener('loadedmetadata', function() {
+        video.play();
+      });
+    }
+  </script>
+
+</body>
+</html>
