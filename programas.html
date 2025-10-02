@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade de Programação - TV RBM</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --gray-color: #7f8c8d;
+            --border-color: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* HEADER */
+        header {
+            width: 100%;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            border-bottom: 2px solid #eee;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 50px;
+            margin: 5px;
+            border-radius: 8px;
+        }
+
+        /* NAV DESKTOP */
+        nav { display: flex; align-items: center; gap: 20px; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li { position: relative; }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        nav ul li a:hover { color: #0072ce; }
+
+        /* SUBMENU DESKTOP */
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            background: #fff;
+            top: 30px;
+            left: 0;
+            list-style: none;
+            border: 1px solid #ddd;
+            padding: 10px 0;
+            min-width: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        nav ul li.open ul { display: block; }
+        nav ul li ul li { padding: 8px 15px; }
+        nav ul li ul li a { color: #333; font-weight: normal; }
+
+        /* SETINHAS - OCULTAS NO DESKTOP */
+        .arrow {
+            display: none;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        /* AO VIVO */
+        .live-btn {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            background: #d32f2f;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .live-btn:hover { background: #b71c1c; }
+
+        /* MENU HAMBURGUER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 1100;
+        }
+        .hamburger div {
+            width: 28px;
+            height: 3px;
+            background: #333;
+            transition: 0.4s;
+            border-radius: 2px;
+        }
+        .hamburger.active div:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active div:nth-child(2) { opacity: 0; }
+        .hamburger.active div:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                flex-direction: column;
+                background: #fff;
+                width: 260px;
+                height: 100vh;
+                padding-top: 80px;
+                gap: 0;
+                transition: 0.4s ease-in-out;
+                box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+                overflow-y: auto;
+            }
+            nav ul.active { right: 0; }
+
+            nav ul li { width: 100%; border-bottom: 1px solid #eee; }
+            nav ul li a {
+                font-size: 18px;
+                padding: 14px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            nav ul li a:hover { background: #0072ce; color: #fff; }
+
+            /* SETINHAS - VISÍVEIS APENAS NO MOBILE */
+            .arrow {
+                display: inline;
+            }
+            nav ul li.open .arrow {
+                transform: rotate(90deg);
+            }
+
+            /* SUBMENU MOBILE */
+            nav ul li ul {
+                position: static;
+                max-height: 0;
+                overflow: hidden;
+                padding-left: 20px;
+                border: none;
+                box-shadow: none;
+                transition: max-height 0.3s ease;
+            }
+            nav ul li.open ul {
+                max-height: 500px;
+            }
+            nav ul li ul li a {
+                font-size: 16px;
+                padding: 10px 15px;
+                font-weight: normal;
+            }
+
+            .hamburger { display: flex; }
+        }
+        
+        /* Barra de Cotações */
+        .cotacoes {
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 6px 10px;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .cotacao {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        .moeda { font-weight: bold; }
+        .valor { display: inline-block; }
+        .seta { font-size: 1rem; }
+        .alta { color: #00ff00; }
+        .baixa { color: #ff0000; }
+
+        @media (max-width: 768px) {
+            .cotacoes {
+                justify-content: flex-start;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 5px 8px;
+            }
+            .cotacao {
+                display: inline-flex;
+                margin-right: 15px;
+                gap: 6px;
+            }
+        }
+
+        /* CONTEÚDO DA GRADE DE PROGRAMAÇÃO */
+        .current-time {
+            background-color: var(--primary-color);
+            color: white;
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-color);
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+        }
+        
+        .grade-section {
+            display: none;
+            margin-bottom: 50px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .grade-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .grade-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px 5px 0 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .programacao-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background-color: white;
+            margin-bottom: 30px;
+        }
+        
+        .programacao-table th, 
+        .programacao-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .programacao-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .horario {
+            width: 150px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .programa {
+            color: var(--secondary-color);
+        }
+        
+        .programa.reprise {
+            color: var(--gray-color);
+            font-style: italic;
+        }
+        
+        .now-playing {
+            background-color: #e8f4fc;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        /* FOOTER */
+        .rbm-footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 50px 20px 30px;
+            margin-top: auto;
+            border-top: 5px solid #1e3a8a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer-wave {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="%231e3a8a"></path></svg>');
+            background-size: 1200px 100%;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .logo-container {
+            margin-bottom: 15px;
+        }
+        
+        .logo-img {
+            height: 60px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-slogan {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .social-icon:hover {
+            background-color: #3b82f6;
+            transform: translateY(-3px);
+        }
+        
+        .footer-section h3 {
+            color: #3b82f6;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #3b82f6;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-links a::before {
+            content: '▶';
+            color: #3b82f6;
+            margin-right: 8px;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover::before {
+            margin-right: 12px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ccc;
+        }
+        
+        .contact-icon {
+            width: 35px;
+            height: 35px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            background-color: #333;
+            color: white;
+        }
+        
+        .newsletter-input::placeholder {
+            color: #999;
+        }
+        
+        .newsletter-button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .newsletter-button:hover {
+            background-color: #1e3a8a;
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .copyright {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-bottom-links a {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-bottom-links a:hover {
+            color: #3b82f6;
+        }
+        
+        .live-badge {
+            text-decoration: none;
+            background: linear-gradient(135deg, #c00, #a00);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(204, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0); }
+        }
+        
+        .live-badge::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .vivo{
+            text-decoration: none;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-logo {
+                align-items: center;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input {
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-button {
+                border-radius: 4px;
+                padding: 12px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .horario {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER COM MENU -->
+    <header>
+        <div class="logo">
+            <img src="imagens/logos/01.png" alt="TV RBM Logo">
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li class="has-sub">
+                    <a href="noticias.html">Notícias <span class="arrow">▶</span></a>
+                    <ul>
+                        <li><a href="noticias.html">Política</a></li>
+                        <li><a href="noticias.html">Esportes</a></li>
+                        <li><a href="notícias.html">Cultura</a></li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">Programas <span class="arrow">▶</span></a>
+                    <ul>
+                        <li><a href="#">Entrevistas</a></li>
+                        <li><a href="#">Debates</a></li>
+                    </ul>
+                </li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </nav>
+
+        <a class="vivo" href="aovivo.html" class="link-sem-estilo">
+            <div class="live-badge">AO VIVO</div>
+        </a>
+
+        <div class="hamburger" onclick="toggleMenu(this)">
+            <div></div><div></div><div></div>
+        </div>
+    </header>
+
+    <!-- Barra de Cotações -->
+    <section class="cotacoes">
+        <div class="cotacao">
+            <span class="moeda">USD</span>
+            <span class="valor" id="valor-dolar">R$ 5,45</span>
+            <span class="seta alta" id="seta-dolar">🔼</span>
+        </div>
+        <div class="cotacao">
+            <span class="moeda">EUR</span>
+            <span class="valor" id="valor-euro">R$ 6,20</span>
+            <span class="seta baixa" id="seta-euro">🔽</span>
+        </div>
+        <div class="cotacao">
+            <span class="moeda">BTC</span>
+            <span class="valor" id="valor-bitcoin">R$ 350.000</span>
+            <span class="seta alta" id="seta-bitcoin">🔼</span>
+        </div>
+        <div class="cotacao">
+            <span class="moeda">IBOV</span>
+            <span class="valor" id="valor-ibov">118.456,23</span>
+            <span class="seta alta" id="seta-ibov">🔼</span>
+        </div>
+    </section>
+
+    <!-- CONTEÚDO DA GRADE DE PROGRAMAÇÃO -->
+    <div class="container">
+        <div class="current-time" id="current-time"></div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="primeira">Manhã/Tarde</div>
+            <div class="tab" data-tab="segunda">Tarde/Noite</div>
+        </div>
+        
+        <main>
+            <section class="grade-section active" id="primeira-grade">
+                <h2 class="grade-title">
+                    <span>📋</span>
+                    PRIMEIRA GRADE (Manhã/Tarde)
+                </h2>
+                <table class="programacao-table">
+                    <tr>
+                        <th class="horario">Horário</th>
+                        <th class="programa">Programa</th>
+                    </tr>
+                    <tr>
+                        <td class="horario">6h00 - 7h00</td>
+                        <td class="programa">Jornal RBM 1ª Edição</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">7h00 - 8h00</td>
+                        <td class="programa">Cidades Empreendedoras (reprise)</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">8h00 - 9h00</td>
+                        <td class="programa">Conheça o Brasil (GastroTour)</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">9h00 - 10h00</td>
+                        <td class="programa">Brasil Inclusivo (Inclusão social e Mobilidade)</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">10h00 - 11h00</td>
+                        <td class="programa">Meio Ambiente</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">11h00 - 12h00</td>
+                        <td class="programa">RBM Esportes</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">12h00 - 13h00</td>
+                        <td class="programa">Jornal RBM</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <section class="grade-section" id="segunda-grade">
+                <h2 class="grade-title">
+                    <span>📋</span>
+                    SEGUNDA GRADE (Tarde/Noite)
+                </h2>
+                <table class="programacao-table">
+                    <tr>
+                        <th class="horario">Horário</th>
+                        <th class="programa">Programa</th>
+                    </tr>
+                    <tr>
+                        <td class="horario">12h00 - 13h00</td>
+                        <td class="programa">Jornal RBM</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">13h00 - 14h00</td>
+                        <td class="programa">Cidades Empreendedoras (reprise)</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">14h00 - 15h00</td>
+                        <td class="programa">Rotas & Destinos</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">15h00 - 16h00</td>
+                        <td class="programa">Histórias de Prefeitos e Prefeituras</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">16h00 - 17h00</td>
+                        <td class="programa">Projetos Tecnologia e Inovação</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">17h00 - 18h00</td>
+                        <td class="programa">Brasil em dia 2ª Edição</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">18h00 - 19h00</td>
+                        <td class="programa">Agendas de Eventos</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">19h00 - 20h00</td>
+                        <td class="programa">Cidades Empreendedoras (reprise)</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">20h00 - 21h00</td>
+                        <td class="programa">Rotas & Destinos</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">21h00 - 22h00</td>
+                        <td class="programa">Histórias de Prefeitos e Prefeituras</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">22h00 - 23h00</td>
+                        <td class="programa">Projetos Tecnologia e Inovação</td>
+                    </tr>
+                    <tr>
+                        <td class="horario">23h00 - 0h00</td>
+                        <td class="programa">Brasil em dia 3ª Edição</td>
+                    </tr>
+                </table>
+            </section>
+        </main>
+    </div>
+    
+    <!-- FOOTER -->
+    <footer class="rbm-footer">
+        <div class="footer-wave"></div>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <div class="logo-container">
+                    <img src="imagens/logos/01.png" alt="TV RBM" class="logo-img">
+                </div>
+                <p class="footer-slogan">Sua janela para o mundo - Notícias que importam</p>
+                <a class="vivo" href="aovivo.html" class="link-sem-estilo">
+                    <div class="live-badge">AO VIVO AGORA</div>
+                </a>
+                
+                <div class="social-icons">
+                    <a href="#" class="social-icon">f</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">t</a>
+                    <a href="#" class="social-icon">you</a>
+                    <a href="#" class="social-icon">ig</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Programação</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Jornal da Manhã</a></li>
+                    <li><a href="#">Bom Dia Cidade</a></li>
+                    <li><a href="#">Jornal do Meio-Dia</a></li>
+                    <li><a href="#">RBM Notícias</a></li>
+                    <li><a href="#">Plantão RBM</a></li>
+                    <li><a href="#">Documentários</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Institucional</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Sobre a RBM</a></li>
+                    <li><a href="#">Nossa História</a></li>
+                    <li><a href="#">Equipe</a></li>
+                    <li><a href="#">Trabalhe Conosco</a></li>
+                    <li><a href="#">Ética Jornalística</a></li>
+                    <li><a href="#">Publicidade</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>(61) 3456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✉</div>
+                        <span>contato@tvrbm.com.br</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <span>SHIS QI1 Lago Sul/DF</span>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 25px;">Newsletter</h3>
+                <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9rem;">Receba as notícias em primeira mão</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Seu e-mail">
+                    <button type="submit" class="newsletter-button">Assinar</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; 2025 TV RBM. Todos os direitos reservados.
+            </div>
+            <div class="footer-bottom-links">
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Mapa do Site</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // MENU FUNCTIONS
+        function toggleMenu(el) {
+            el.classList.toggle("active");
+            document.querySelector("nav ul").classList.toggle("active");
+        }
+
+        // submenus mobile
+        document.querySelectorAll("nav ul li.has-sub > a").forEach(link => {
+            link.addEventListener("click", e => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    let parent = link.parentElement;
+                    parent.classList.toggle("open");
+                }
+            });
+        });
+
+        // submenus desktop - expandir ao clicar
+        document.querySelectorAll("nav ul li.has-sub > a").forEach(link => {
+            link.addEventListener("click", e => {
+                if (window.innerWidth > 768) {
+                    e.preventDefault();
+                    let parent = link.parentElement;
+                    parent.classList.toggle("open");
+                    
+                    // Fechar outros submenus abertos
+                    document.querySelectorAll("nav ul li.has-sub").forEach(item => {
+                        if (item !== parent && item.classList.contains("open")) {
+                            item.classList.remove("open");
+                        }
+                    });
+                }
+            });
+        });
+
+        // Fechar submenus ao clicar fora
+        document.addEventListener("click", e => {
+            if (window.innerWidth > 768) {
+                if (!e.target.closest("nav ul li.has-sub")) {
+                    document.querySelectorAll("nav ul li.has-sub").forEach(item => {
+                        item.classList.remove("open");
+                    });
+                }
+            }
+        });
+
+        // GRADE DE PROGRAMAÇÃO FUNCTIONS
+        // Atualizar hora atual
+        function updateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('current-time').textContent = 
+                now.toLocaleDateString('pt-BR', options);
+        }
+        
+        // Inicializar e atualizar a cada minuto
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        // SISTEMA DE ABAS - CÓDIGO SIMPLIFICADO E FUNCIONAL
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.grade-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the corresponding section
+                    const tabId = this.getAttribute('data-tab');
+                    const targetSection = document.getElementById(`${tabId}-grade`);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+        }
+        
+        // Inicializar o sistema de abas quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            initTabs();
+            highlightCurrentProgram();
+        });
+        
+        // Destacar programa atual
+        function highlightCurrentProgram() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour + currentMinute/60;
+            
+            // Remover destacações anteriores
+            document.querySelectorAll('.now-playing').forEach(el => {
+                el.classList.remove('now-playing');
+            });
+            
+            // Encontrar programa atual
+            const programs = document.querySelectorAll('.programacao-table tr');
+            programs.forEach(program => {
+                const timeCell = program.querySelector('.horario');
+                if (timeCell) {
+                    const timeText = timeCell.textContent;
+                    const times = timeText.split(' - ');
+                    
+                    if (times.length === 2) {
+                        const startTime = parseTime(times[0]);
+                        let endTime = parseTime(times[1]);
+                        
+                        // Se termina à meia-noite, considerar como 24h
+                        if (endTime === 0) endTime = 24;
+                        
+                        if (currentTime >= startTime && currentTime < endTime) {
+                            program.classList.add('now-playing');
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Função auxiliar para converter horário texto para decimal
+        function parseTime(timeStr) {
+            const parts = timeStr.split('h');
+            const hours = parseInt(parts[0]);
+            const minutes = parts[1] ? parseInt(parts[1]) : 0;
+            return hours + minutes/60;
+        }
+        
+        // Atualizar destaque a cada minuto
+        setInterval(highlightCurrentProgram, 60000);
+    </script>
+</body>
+</html>
