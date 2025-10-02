@@ -1,130 +1,612 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TV RBM Online</title>
-  <style>
-    /* Reset básico */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV RBM - Transmissão Ao Vivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(180deg, #0c0c0c, #1a1a1a);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    /* Header */
-    header {
-      width: 100%;
-      background-color: rgba(10,10,10,0.95);
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+        /* Header com logo RBM */
+        .live-header {
+            background: #ffffff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+            border-bottom: 3px solid #006FC9;
+        }
 
-    header img {
-      max-width: 180px;
-      height: auto;
-      transition: transform 0.3s;
-    }
+        .rbm-brand {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
 
-    header img:hover {
-      transform: scale(1.05);
-    }
+        .rbm-logo {
+            height: 50px;
+            width: auto;
+        }
 
-    /* Container do vídeo */
-    .video-container {
-      width: 90%;
-      max-width: 960px;
-      margin: 40px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        .viewer-count {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
 
-    video {
-      width: 100%;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.8);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+        /* Container Principal */
+        .stream-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-    video:hover {
-      transform: scale(1.02);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
-    }
+        /* Player de Stream */
+        .stream-player {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 111, 201, 0.3);
+            margin-bottom: 2rem;
+            position: relative;
+        }
 
-    /* Footer */
-    footer {
-      width: 100%;
-      text-align: center;
-      padding: 15px 0;
-      background-color: rgba(10,10,10,0.95);
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.7);
-      color: #aaa;
-      font-size: 0.9rem;
-    }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+        }
 
-    /* Responsividade */
-    @media (max-width: 600px) {
-      header img {
-        max-width: 140px;
-      }
+        #liveVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-      .video-container {
-        margin: 20px 0;
-      }
-    }
-  </style>
+        /* Overlay de Stream */
+        .stream-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .stream-status {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        .stream-time {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Informações da Stream */
+        .stream-info {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stream-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .stream-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .stream-description {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Chat Simulado */
+        .chat-section {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chat-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #006FC9;
+        }
+
+        .online-count {
+            background: #10B55D;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #000;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.8rem;
+            animation: messageSlide 0.3s ease;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #006FC9, #10B55D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+            align-items: center;
+        }
+
+        .username {
+            font-weight: 600;
+            color: #10B55D;
+        }
+
+        .user-badge {
+            background: #006FC9;
+            color: #fff;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .message-time {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .message-text {
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: #2a2a2a;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .chat-input input::placeholder {
+            color: #666;
+        }
+
+        .chat-input button {
+            background: linear-gradient(135deg, #006FC9, #10B55D);
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 111, 201, 0.4);
+        }
+
+        /* Animações */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Layout Grid para Stream + Chat */
+        .stream-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .stream-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .live-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .rbm-brand {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .rbm-logo {
+                height: 40px;
+            }
+
+            .stream-container {
+                padding: 1rem;
+            }
+
+            .stream-title {
+                font-size: 1.5rem;
+            }
+
+            .stream-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .chat-messages {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rbm-logo {
+                height: 35px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Header com logo RBM -->
+    <header class="live-header">
+        <div class="rbm-brand">
+            <img src="imagens/logos/01.png" alt="TV RBM" class="rbm-logo">
+        </div>
+        <div class="viewer-count">
+            <span>👁️</span>
+            <span id="viewerCount">2.5K</span> telespectadores
+        </div>
+    </header>
 
-  <header>
-    <img src="Imagens/logos/01.png" alt="Logo TV RBM">
-  </header>
+    <div class="stream-container">
+        <div class="stream-layout">
+            <!-- Área Principal da Stream -->
+            <div class="main-content">
+                <!-- Player de Stream -->
+                <div class="stream-player">
+                    <div class="video-wrapper">
+                        <video id="liveVideo" autoplay muted controls>
+                            <source src="videos/01.mp4" type="video/mp4">
+                            <source src="seu-video.webm" type="video/webm">
+                            Seu navegador não suporta o elemento de vídeo.
+                        </video>
+                        
+                        <!-- Overlay da Stream -->
+                        <div class="stream-overlay">
+                            <div class="stream-status">
+                                <div class="live-dot"></div>
+                                <span>TRANSMISSÃO AO VIVO - TV RBM</span>
+                            </div>
+                            <div class="stream-time" id="streamTimer">00:00:00</div>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="video-container">
-    <video id="tvRBM" controls autoplay>
-      <source src="https://link-do-streaming-da-tv-rbm/stream.m3u8" type="application/x-mpegURL">
-      Seu navegador não suporta reprodução de vídeo.
-    </video>
-  </div>
+                <!-- Informações da Stream -->
+                <div class="stream-info">
+                    <h1 class="stream-title">TV RBM - Transmissão Especial Ao Vivo</h1>
+                    <div class="stream-meta">
+                        <div class="meta-item">
+                            <span>📺</span>
+                            <span>Canal Oficial TV RBM</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📅</span>
+                            <span id="currentDateTime">Carregando...</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>👁️</span>
+                            <span id="liveViewers">2.5K telespectadores</span>
+                        </div>
+                    </div>
+                    <p class="stream-description">
+                        Bem-vindo à transmissão ao vivo oficial da TV RBM! Acompanhe nossa programação especial 
+                        e participe do chat interativo. Sua opinião é importante para nós! 
+                        📞 Contato: (11) 3456-7890 | 📧 contato@tvrbmonline.com.br
+                    </p>
+                </div>
+            </div>
 
-  <footer>
-    © 2025 TV RBM - Todos os direitos reservados
-  </footer>
+            <!-- Chat ao Vivo -->
+            <div class="chat-section">
+                <div class="chat-header">
+                    <h3 class="chat-title">Chat RBM</h3>
+                    <div class="online-count" id="onlineCount">2.5K online</div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Mensagens serão adicionadas via JavaScript -->
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Participe do chat RBM...">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    const video = document.getElementById('tvRBM');
-    const videoSrc = video.querySelector('source').src;
+    <script>
+        // Elementos DOM
+        const liveVideo = document.getElementById('liveVideo');
+        const streamTimer = document.getElementById('streamTimer');
+        const currentDateTime = document.getElementById('currentDateTime');
+        const viewerCount = document.getElementById('viewerCount');
+        const liveViewers = document.getElementById('liveViewers');
+        const onlineCount = document.getElementById('onlineCount');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
 
-    if(Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        video.play();
-      });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function() {
-        video.play();
-      });
-    }
-  </script>
+        // Simular dados de transmissão ao vivo
+        let streamStartTime = new Date();
+        let viewerBase = 2500;
+        let messageCount = 0;
 
+        // Mensagens temáticas da TV RBM
+        const rbmMessages = [
+            { user: "CarlosSP", badge: "ASSINANTE", text: "Qual a próxima atração da programação hoje?" },
+            { user: "AnaRibeirão", badge: "", text: "RBM sempre com a melhor cobertura! Parabéns pela qualidade 🎯" },
+            { user: "ModeradorRBM", badge: "MODERADOR", text: "Bem-vindos à transmissão ao vivo da TV RBM! 🎥" },
+            { user: "JoãoMinas", badge: "ASSINANTE", text: "Esse jornalismo é de qualidade! Notícias confiáveis 💙" },
+            { user: "MariaSantos", badge: "", text: "Quando vai passar a novela hoje? Alguém sabe o horário? 📺" },
+            { user: "PauloCuritiba", badge: "ASSINANTE", text: "A cobertura esportiva de vocês é imbatível! ⚽" },
+            { user: "ModeradorRBM", badge: "MODERADOR", text: "Lembrando: Nosso telefone para contato é (11) 3456-7890 📞" },
+            { user: "FernandaGoias", badge: "", text: "Adoro os programas de entrevistas da RBM! 👏" },
+            { user: "RobertoBH", badge: "ASSINANTE", text: "Sinal chegando perfeito aqui em Belo Horizonte! 📡" },
+            { user: "ModeradorRBM", badge: "MODERADOR", text: "Participe enviando suas perguntas pelo chat! 💬" },
+            { user: "LuciaRio", badge: "", text: "A previsão do tempo de hoje estava certinha! 🌦️" },
+            { user: "MarcosSP", badge: "ASSINANTE", text: "Quando começa o jogo ao vivo hoje?" },
+            { user: "ModeradorRBM", badge: "MODERADOR", text: "Não percam o especial de notícias às 20h! 🕗" },
+            { user: "CarlaPortoAlegre", badge: "", text: "RBM faz falta na TV aberta! Canal essencial 💪" },
+            { user: "ModeradorRBM", badge: "MODERADOR", text: "Agradecemos a todos pelos elogios! A RBM trabalha para vocês! ❤️" }
+        ];
+
+        const rbmUsers = ["Carlos", "Ana", "João", "Maria", "Paulo", "Fernanda", "Roberto", "Lúcia", "Marcos", "Carla", "Pedro", "Beatriz", "Ricardo", "Sandra"];
+
+        // Atualizar timer da stream
+        function updateStreamTimer() {
+            const now = new Date();
+            const diff = now - streamStartTime;
+            
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            streamTimer.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Atualizar data e hora atual
+        function updateDateTime() {
+            const now = new Date();
+            currentDateTime.textContent = now.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Simular flutuação de telespectadores
+        function updateViewerCount() {
+            const variation = Math.floor(Math.random() * 100) - 50; // -50 a +50
+            const currentViewers = Math.max(1500, viewerBase + variation);
+            
+            const formatted = currentViewers >= 1000 ? 
+                (currentViewers / 1000).toFixed(1) + 'K' : 
+                currentViewers.toString();
+            
+            viewerCount.textContent = formatted;
+            liveViewers.textContent = formatted + ' telespectadores';
+            onlineCount.textContent = formatted + ' online';
+        }
+
+        // Adicionar mensagem ao chat
+        function addMessage(user, badge, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const userInitial = user.charAt(0).toUpperCase();
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="user-avatar">${userInitial}</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="username">${user}</span>
+                        ${badge ? `<span class="user-badge">${badge}</span>` : ''}
+                        <span class="message-time">${timeString}</span>
+                    </div>
+                    <div class="message-text">${text}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            messageCount++;
+        }
+
+        // Simular mensagens automáticas do chat
+        function simulateChatMessage() {
+            if (Math.random() < 0.4) { // 40% de chance a cada execução
+                const randomUser = rbmUsers[Math.floor(Math.random() * rbmUsers.length)];
+                const randomMessage = rbmMessages[Math.floor(Math.random() * rbmMessages.length)];
+                addMessage(randomUser, randomMessage.badge, randomMessage.text);
+            }
+        }
+
+        // Enviar mensagem do usuário
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (text) {
+                addMessage('Você', '', text);
+                messageInput.value = '';
+                
+                // Simular resposta automática após 1-3 segundos
+                setTimeout(() => {
+                    const randomUser = rbmUsers[Math.floor(Math.random() * rbmUsers.length)];
+                    const randomMessage = rbmMessages[Math.floor(Math.random() * rbmMessages.length)];
+                    addMessage(randomUser, randomMessage.badge, randomMessage.text);
+                }, 1000 + Math.random() * 2000);
+            }
+        }
+
+        // Permitir enviar mensagem com Enter
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Inicializar transmissão
+        function initializeStream() {
+            // Configurar vídeo para parecer mais "ao vivo"
+            liveVideo.addEventListener('loadedmetadata', () => {
+                liveVideo.currentTime = liveVideo.duration * 0.8;
+                liveVideo.play();
+            });
+
+            // Adicionar mensagens iniciais da RBM
+            rbmMessages.slice(0, 5).forEach((msg, index) => {
+                setTimeout(() => {
+                    addMessage(msg.user, msg.badge, msg.text);
+                }, index * 3000);
+            });
+
+            // Atualizações em tempo real
+            setInterval(updateStreamTimer, 1000);
+            setInterval(updateDateTime, 60000);
+            setInterval(updateViewerCount, 5000);
+            setInterval(simulateChatMessage, 4000);
+
+            // Inicializar valores
+            updateDateTime();
+            updateViewerCount();
+        }
+
+        // Iniciar quando a página carregar
+        window.addEventListener('load', initializeStream);
+    </script>
 </body>
 </html>
