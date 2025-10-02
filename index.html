@@ -1411,6 +1411,266 @@
         .vivo{
           text-decoration: none;
         }
+
+
+
+
+
+
+
+
+
+                .destaque-manchete1 {
+            background: #006FC9;
+            color: white;
+            padding: 2.5rem 0;
+            margin: 1.5rem 0;
+           
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container-manchete1 {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .conteudo-manchete1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .texto-manchete1 {
+            padding-right: 1rem;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s ease-out;
+        }
+
+        .texto-manchete1.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .tag-destaque1 {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #006FC9;
+            font-weight: bold;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: all 0.6s ease-out 0.2s;
+        }
+
+        .tag-destaque1.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .titulo-manchete1 {
+            font-size: 2.3rem;
+            line-height: 1.2;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s ease-out 0.3s;
+        }
+
+        .titulo-manchete1.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .resumo-manchete1 {
+            font-size: 1.3rem;
+            line-height: 1.5;
+            margin-bottom: 1.8rem;
+            opacity: 0.95;
+            font-weight: 400;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s ease-out 0.5s;
+        }
+
+        .resumo-manchete1.visible {
+            transform: translateY(0);
+            opacity: 0.95;
+        }
+
+        .info-manchete1 {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-bottom: 2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease-out 0.7s;
+        }
+
+        .info-manchete1.visible {
+            transform: translateY(0);
+            opacity: 0.85;
+        }
+
+        .data-manchete1, .autor-manchete1 {
+            display: flex;
+            align-items: center;
+        }
+
+        .data-manchete1::before {
+            content: "📅";
+            margin-right: 0.5rem;
+        }
+
+        .autor-manchete1::before {
+            content: "✍️";
+            margin-right: 0.5rem;
+        }
+
+        .botao-lermais1 {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #006FC9;
+            padding: 0.8rem 1.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #ffd700;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease-out 0.9s;
+        }
+
+        .botao-lermais1.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .botao-lermais1:hover {
+            background-color: transparent;
+            color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,215,0,0.3);
+        }
+
+        .imagem-manchete1 {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transform: translateX(50px) rotate(5deg);
+            opacity: 0;
+            transition: all 1s ease-out 0.4s;
+        }
+
+        .imagem-manchete1.visible {
+            transform: translateX(0) rotate(0);
+            opacity: 1;
+        }
+
+        .img-destaque1 {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .imagem-manchete1:hover .img-destaque1 {
+            transform: scale(1.05);
+        }
+
+        .legenda-imagem1 {
+            display: block;
+            padding: 0.8rem;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.85rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Elementos decorativos de fundo */
+        .bg-element1 {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .bg-element1:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            top: -50px;
+            right: -50px;
+        }
+
+        .bg-element1:nth-child(2) {
+            width: 100px;
+            height: 100px;
+            bottom: -30px;
+            left: 10%;
+        }
+
+        .bg-element1:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 30%;
+            right: 20%;
+        }
+
+        /* Responsividade */
+        @media (max-width: 968px) {
+            .conteudo-manchete1 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .texto-manchete1 {
+                padding-right: 0;
+                text-align: center;
+            }
+            
+            .titulo-manchete1 {
+                font-size: 2rem;
+            }
+            
+            .resumo-manchete1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .titulo-manchete1 {
+                font-size: 1.7rem;
+            }
+            
+            .resumo-manchete1 {
+                font-size: 1.1rem;
+            }
+            
+            .info-manchete1 {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .img-destaque1 {
+                height: 250px;
+            }
+        }
   </style>
 </head>
 <body>
@@ -1437,7 +1697,7 @@
             <li><a href="#">Debates</a></li>
           </ul>
         </li>
-        <li><a href="#">Contato</a></li>
+        <li><a href="contato.html">Contato</a></li>
       </ul>
     </nav>
 
@@ -1511,12 +1771,11 @@
       <img src="imagens/materias/05.png" alt="Imagem da matéria">
     </div>
     <div class="materia-conteudo">
-      <h2 class="materia-titulo">Polarização e Reformas: o cenário político brasileiro em 2025</h2>
+      <h2 class="materia-titulo">Presidente Lula na ONU 2025: Brasil propõe nova arquitetura global por desenvolvimento sustentável e paz mundial</h2>
       <p class="materia-resumo">
-        O Brasil atravessa um momento de intensos debates políticos. No Congresso Nacional, pautas ligadas à reforma tributária, à modernização administrativa e ao financiamento de programas sociais dividem opiniões e movimentam as bancadas.<br><br>
-        De um lado, partidos do governo buscam consolidar alianças para garantir a aprovação de projetos considerados essenciais para a economia. Do outro, a oposição pressiona por maior transparência nos gastos e defende ajustes que reduzam a carga sobre a população.
+        Em discurso histórico na Assembleia Geral da ONU 2025, o presidente do Brasil destacou a importância da solidariedade entre as nações e a necessidade urgente de ações conjuntas para enfrentar os grandes desafios do século XXI. Lula ressaltou conquistas sociais obtidas em seu governo, como a redução da pobreza e o fortalecimento de políticas públicas inclusivas, e defendeu uma agenda internacional voltada para a preservação ambiental, a proteção dos direitos humanos e a erradicação da fome. A fala recebeu aplausos calorosos de chefes de Estado e representantes de diversos países, consolidando sua imagem como uma das principais vozes globais na luta por um futuro mais justo, democrático e sustentável.
       </p>
-      <a href="#" class="materia-link">Leia mais →</a>
+      <a href="lula-onu-2025.html" class="materia-link">Leia mais →</a>
     </div>
   </section>
 
@@ -1544,7 +1803,7 @@
       <h2 class="categoria">Entretenimento</h2>
       <img src="imagens/materias/08.png" alt="Notícia de Entretenimento">
       <div class="conteudo">
-        <h3>Ju Paes samba muito, dá beijão e aposta em look deslumbrante na Viradouro</h3>
+        <h3>Daniela Mercury revela capa de novo álbum ‘Cirandaia’</h3>
         <p>Atualidades</p>
       </div>
     </div>
@@ -1573,16 +1832,16 @@
             allowfullscreen>
           </iframe>
         </div>
-        <p class="video1-descricao">Ministros do STF avaliam decisão de Flávio Dino que suspendeu investigação contra Ayres</p>
+        <p class="video1-descricao">Ministro Flávio Dino é eleito presidente da 1ª Turma do STF</p>
       </div>
 
       <!-- Lista lateral -->
       <div class="video1-lista">
-        <div class="video1-item video1-ativo" data-video="#" data-desc="Ministros do STF avaliam decisão de Flávio Dino que suspendeu investigação contra Ayres">
+        <div class="video1-item video1-ativo" data-video="#" data-desc="Ministro Flávio Dino é eleito presidente da 1ª Turma do STF">
           <img src="imagens/thumb/02.png" alt="Thumb vídeo 1">
           <div class="video1-info">
             <span class="video1-tempo">1 min</span>
-            <p>Ministro Luiz Fux vota para absolver dois réus de atos golpistas</p>
+            <p>Lula dá aval para proposta que dá fim à obrigatoriedade de autoescola</p>
           </div>
         </div>
 
@@ -1594,11 +1853,11 @@
           </div>
         </div>
 
-        <div class="video1-item" data-video="#" data-desc="Fux vota para absolver dois réus do 8 de Janeiro por crimes contra a democracia">
+        <div class="video1-item" data-video="#" data-desc="Lula diz estar convencido de que Câmara e Senado vão aprovar ampliação da isenção do IR">
           <img src="imagens/thumb/04.png" alt="Thumb vídeo 3">
           <div class="video1-info">
             <span class="video1-tempo">2 min</span>
-            <p>Fux vota para absolver dois réus do 8 de Janeiro por crimes contra a democracia</p>
+            <p>Lula diz estar convencido de que Câmara e Senado vão aprovar ampliação da isenção do IR</p>
           </div>
         </div>
 
@@ -1612,6 +1871,36 @@
       </div>
     </div>
   </section>
+
+
+
+
+ <section class="destaque-manchete1" id="manchete-gleise1">
+        <!-- Elementos decorativos de fundo -->
+        <div class="bg-element1"></div>
+        <div class="bg-element1"></div>
+        <div class="bg-element1"></div>
+        
+        <div class="container-manchete1">
+            <div class="conteudo-manchete1">
+                <div class="texto-manchete1">
+                    <span class="tag-destaque1">Destaque</span>
+                    <h1 class="titulo-manchete1">Gleise Hoffman defende isenção de IR para famílias de baixa renda</h1>
+                    <p class="resumo-manchete1">Proposta amplia faixa de isenção e garante correção automática pelos índices de inflação</p>
+                    <div class="info-manchete1">
+                        <span class="data-manchete1">15 de Março de 2023</span>
+                        <span class="autor-manchete1">Por Equipe Econômica</span>
+                    </div>
+                    <a href="gleise.html" class="botao-lermais1">Ler Matéria Completa</a>
+                </div>
+                <div class="imagem-manchete1">
+                    <img src="imagens/materias/009.avif" alt="Gleise Hoffman em discurso político" class="img-destaque1">
+                    <span class="legenda-imagem1">Gleise Hoffman durante pronunciamento sobre reforma tributária</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 
 
@@ -1652,10 +1941,10 @@
 <section class="sua-regiao">
   <h2>Sua região <span></span></h2>
   <div class="noticias-container">
-    <a href="https://www.df.gov.br" class="noticia-card">
+    <a href="https://altamira.pa.gov.br/" class="noticia-card">
       <img src="imagens/local/01.png" alt="Brasília">
-      <h3>GDF anuncia novo pacote de obras para mobilidade urbana</h3>
-      <p>Brasília · TV RBM</p>
+      <h3>Achados arqueológicos revelam aldeia ancestral e vestígios de seringal na Terra do Meio, no Pará</h3>
+      <p>Altamira · TV RBM</p>
     </a>
 
     <a href="https://prefeitura.rio" class="noticia-card">
@@ -2196,6 +2485,43 @@ document.querySelectorAll('.noticia-card').forEach(card => {
             const originalText = titulo.textContent;
             typeWriter(titulo, originalText, 30);
         });
+
+
+
+
+
+
+
+         // Função para verificar se o elemento está visível na tela
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Função para adicionar a classe 'visible' quando o elemento estiver visível
+        function handleScroll() {
+            const elements = document.querySelectorAll('.texto-manchete1, .tag-destaque1, .titulo-manchete1, .resumo-manchete1, .info-manchete1, .botao-lermais1, .imagem-manchete1');
+            
+            elements.forEach(element => {
+                if (isElementInViewport(element)) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Adiciona o evento de scroll
+        window.addEventListener('scroll', handleScroll);
+        
+        // Verifica os elementos quando a página carrega
+        window.addEventListener('load', handleScroll);
+        
+        // Força a verificação após um pequeno delay para garantir que o DOM está pronto
+        setTimeout(handleScroll, 100);
 
   </script>
 </body>

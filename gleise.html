@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gleise Hoffman defende isenção de IR para famílias de baixa renda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .materia-container1 {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Cabeçalho da Matéria */
+        .cabecalho-materia1 {
+            background: linear-gradient(135deg, #006FC9 0%, #004a8f 100%);
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .container1 {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tag-materia1 {
+            display: inline-block;
+            background: #ffd700;
+            color: #006FC9;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .titulo-principal1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .resumo-materia1 {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-info1 {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Conteúdo Principal */
+        .conteudo-materia1 {
+            padding: 3rem 2rem;
+        }
+
+        .conteudo-principal1 {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .destaque-visual1 {
+            float: right;
+            width: 400px;
+            margin: 0 0 2rem 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .img-destaque1 {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .legenda-img1 {
+            padding: 1rem;
+            background: #f8f9fa;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .paragrafo-materia1 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .destaque-citacao1 {
+            background: #e8f4ff;
+            border-left: 4px solid #006FC9;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .autor-citacao1 {
+            display: block;
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #006FC9;
+        }
+
+        /* Seção de Benefícios */
+        .secao-beneficios1 {
+            background: #f8f9fa;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .titulo-secao1 {
+            color: #006FC9;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .grid-beneficios1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card-beneficio1 {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #006FC9;
+        }
+
+        .icone-beneficio1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .titulo-card1 {
+            color: #006FC9;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Detalhes da Proposta */
+        .detalhes-proposta1 {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 2px solid #e8f4ff;
+            margin: 2rem 0;
+        }
+
+        .lista-proposta1 {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-proposta1 {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .item-proposta1:last-child {
+            border-bottom: none;
+        }
+
+        .numero-item1 {
+            background: #006FC9;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Rodapé da Matéria */
+        .rodape-materia1 {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tags-materia1 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag-item1 {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .compartilhar1 {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-compartilhar1 {
+            background: #006FC9;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Animações */
+        .fade-in1 {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in1.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .titulo-principal1 {
+                font-size: 2rem;
+            }
+
+            .resumo-materia1 {
+                font-size: 1.1rem;
+            }
+
+            .destaque-visual1 {
+                float: none;
+                width: 100%;
+                margin: 0 0 2rem 0;
+            }
+
+            .meta-info1 {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .grid-beneficios1 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="materia-container1">
+        <!-- Cabeçalho -->
+        <header class="cabecalho-materia1">
+            <div class="container1">
+                <span class="tag-materia1">Economia</span>
+                <h1 class="titulo-principal1 fade-in1">Gleise Hoffman defende isenção de IR para famílias de baixa renda em projeto que pode beneficiar milhões de brasileiros</h1>
+                <p class="resumo-materia1 fade-in1">Proposta amplia faixa de isenção para até 3 salários mínimos e garante correção automática pelos índices de inflação, representando um alívio para 15 milhões de contribuintes</p>
+                <div class="meta-info1 fade-in1">
+                    <span>📅 15 de Março de 2023</span>
+                    <span>✍️ Por Maria Silva - Economia</span>
+                    <span>⏱️ Leitura: 5 min</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <div class="conteudo-materia1">
+            <div class="conteudo-principal1">
+                <!-- Destaque Visual -->
+                <aside class="destaque-visual1 fade-in1">
+                    <img src="imagens/materias/009.webp" alt="Reunião sobre reforma tributária" class="img-destaque1">
+                    <div class="legenda-img1">Gleise Hoffman durante debate sobre reforma tributária no Congresso Nacional</div>
+                </aside>
+
+                <!-- Texto Principal -->
+                <div class="texto-principal1">
+                    <p class="paragrafo-materia1 fade-in1">A deputada federal <strong>Gleise Hoffman</strong> tornou-se uma das principais vozes no Congresso Nacional em defesa da ampliação da isenção do Imposto de Renda para as famílias de baixa renda. Seu projeto de lei, que já conta com o apoio de mais de 200 parlamentares, promete revolucionar o sistema tributário brasileiro ao devolver poder de compra para milhões de trabalhadores.</p>
+
+                    <p class="paragrafo-materia1 fade-in1">Em entrevista exclusiva, Hoffman afirmou que "o atual sistema tributário brasileiro é profundamente injusto e penaliza justamente aqueles que mais precisam de proteção do Estado". A parlamentar destacou que a proposta vai além de uma simples medida assistencialista, representando uma estratégia de desenvolvimento econômico.</p>
+
+                    <blockquote class="destaque-citacao1 fade-in1">
+                        "Quando falamos em isenção de IR para as faixas de menor renda, estamos falando de injetar recursos diretamente na economia real. Esse dinheiro não vai para paraísos fiscais, não fica aplicado em fundos de investimento - ele vai direto para o comércio local, para o pequeno empresário, para o setor de serviços que tanto emprega no nosso país"
+                        <span class="autor-citacao1">- Gleise Hoffman, deputada federal</span>
+                    </blockquote>
+
+                    <p class="paragrafo-materia1 fade-in1">Estudos do Departamento Intersindical de Estatística e Estudos Socioeconômicos (DIEESE) apontam que a medida pode injetar aproximadamente <strong>R$ 18 bilhões anuais</strong> na economia brasileira, com impacto direto no comércio varejista, setor de alimentação e serviços essenciais.</p>
+                </div>
+
+                <!-- Seção de Benefícios -->
+                <section class="secao-beneficios1">
+                    <h2 class="titulo-secao1 fade-in1">Impactos Positivos da Proposta</h2>
+                    <div class="grid-beneficios1">
+                        <div class="card-beneficio1 fade-in1">
+                            <div class="icone-beneficio1">💰</div>
+                            <h3 class="titulo-card1">Alívio Imediato</h3>
+                            <p>Famílias terão até R$ 300 mensais a mais no orçamento, permitindo melhor qualidade de vida e consumo de bens essenciais.</p>
+                        </div>
+                        <div class="card-beneficio1 fade-in1">
+                            <div class="icone-beneficio1">📈</div>
+                            <h3 class="titulo-card1">Estímulo Econômico</h3>
+                            <p>Injeção de R$ 18 bilhões/ano na economia, com multiplicador keynesiano estimado em 1.8 para regiões menos desenvolvidas.</p>
+                        </div>
+                        <div class="card-beneficio1 fade-in1">
+                            <div class="icone-beneficio1">👨‍👩‍👧‍👦</div>
+                            <h3 class="titulo-card1">Inclusão Social</h3>
+                            <p>Redução da desigualdade através da transferência de renda indireta para as camadas mais vulneráveis da população.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detalhes da Proposta -->
+                <section class="detalhes-proposta1 fade-in1">
+                    <h2 class="titulo-secao1">Principais Pontos do Projeto de Lei</h2>
+                    <ul class="lista-proposta1">
+                        <li class="item-proposta1">
+                            <div class="numero-item1">1</div>
+                            <div>
+                                <strong>Ampliação da faixa de isenção:</strong> Elevação do limite para até 3 salários mínimos mensais
+                            </div>
+                        </li>
+                        <li class="item-proposta1">
+                            <div class="numero-item1">2</div>
+                            <div>
+                                <strong>Correção automática:</strong> Reajuste anual dos valores conforme índices oficiais de inflação
+                            </div>
+                        </li>
+                        <li class="item-proposta1">
+                            <div class="numero-item1">3</div>
+                            <div>
+                                <strong>Simplificação:</strong> Redução da burocracia para declaração de isentos
+                            </div>
+                        </li>
+                        <li class="item-proposta1">
+                            <div class="numero-item1">4</div>
+                            <div>
+                                <strong>Estímulo à formalização:</strong> Benefícios fiscais para microempreendedores individuais
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Conclusão -->
+                <div class="texto-principal1">
+                    <p class="paragrafo-materia1 fade-in1">Especialistas em política tributária avaliam que a proposta de Hoffman chega em um momento crucial para a economia brasileira. Professor da FGV, Dr. Carlos Eduardo, ressalta que "medidas como essa têm efeito anticíclico importante, especialmente em períodos de retração econômica".</p>
+
+                    <p class="paragrafo-materia1 fade-in1">O projeto já passou pela Comissão de Constituição e Justiça e agora aguarda análise da Comissão de Finanças e Tributação. A expectativa é que possa ser votado em plenário ainda este semestre, com chances reais de aprovação dado o amplo apoio multipartidário que conquistou.</p>
+
+                    <p class="paragrafo-materia1 fade-in1">Enquanto isso, Gleise Hoffman continua percorrendo o país para explicar os benefícios da proposta e angariar apoio da sociedade civil. "Estamos construindo uma ponte entre a teoria econômica e a vida real das pessoas. Esse projeto vai fazer a diferença na mesa do trabalhador brasileiro", finaliza a parlamentar.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="rodape-materia1">
+            <div class="container1">
+                <div class="tags-materia1">
+                    <span class="tag-item1">#ReformaTributária</span>
+                    <span class="tag-item1">#IsençãoIR</span>
+                    <span class="tag-item1">#GleiseHoffman</span>
+                    <span class="tag-item1">#Economia</span>
+                    <span class="tag-item1">#Política</span>
+                </div>
+                <div class="compartilhar1">
+                    <span>Compartilhe esta matéria:</span>
+                    <button class="btn-compartilhar1">📱 WhatsApp</button>
+                    <button class="btn-compartilhar1">📘 Facebook</button>
+                    <button class="btn-compartilhar1">🐦 Twitter</button>
+                </div>
+            </div>
+        </footer>
+    </article>
+
+    <script>
+        // Animação de scroll
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight * 1.1) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        function handleScroll() {
+            const elements = document.querySelectorAll('.fade-in1');
+            
+            elements.forEach(element => {
+                if (isElementInViewport(element)) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('load', handleScroll);
+        
+        // Adiciona delay sequencial para as animações
+        document.querySelectorAll('.fade-in1').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

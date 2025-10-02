@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fale Conosco</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #006FC9 0%, #10B55D 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #006FC9 0%, #10B55D 100%);
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .contact-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .contact-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #10B55D;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-icon {
+            background: rgba(255,255,255,0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-content p {
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            background: rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #10B55D;
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            padding: 3rem 2rem;
+        }
+
+        .contact-form h2 {
+            color: #006FC9;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #006FC9;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 111, 201, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #006FC9 0%, #10B55D 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 111, 201, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        /* Animações */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-info, .contact-form {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header fade-in">
+            <h1>Fale Conosco</h1>
+            <p>Estamos aqui para responder suas dúvidas e ouvir suas sugestões</p>
+        </header>
+
+        <div class="contact-wrapper">
+            <!-- Informações de Contato -->
+            <div class="contact-info fade-in delay-1">
+                <h2>Entre em Contato</h2>
+                
+                <div class="info-item">
+                    <div class="info-icon">📧</div>
+                    <div class="info-content">
+                        <h3>Email</h3>
+                        <p>contato@tvrbm.org</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📱</div>
+                    <div class="info-content">
+                        <h3>Telefone</h3>
+                        <p>(61) 99999-9999</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">🕒</div>
+                    <div class="info-content">
+                        <h3>Horário de Atendimento</h3>
+                        <p>Segunda a Sexta: 9h às 18h<br>Sábado: 9h às 13h</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-content">
+                        <h3>Localização</h3>
+                        <p>Brasília, DF<br>Brasil</p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">📷</a>
+                    <a href="#" class="social-link">🐦</a>
+                    <a href="#" class="social-link">💼</a>
+                </div>
+            </div>
+
+            <!-- Formulário de Contato -->
+            <div class="contact-form fade-in delay-2">
+                <h2>Envie sua Mensagem</h2>
+                
+                <div id="statusMessage" class="status-message"></div>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nome Completo *</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Telefone</label>
+                        <input type="tel" id="phone" name="phone" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Assunto *</label>
+                        <select id="subject" name="subject" class="form-control" required>
+                            <option value="">Selecione um assunto</option>
+                            <option value="Dúvida">Dúvida</option>
+                            <option value="Sugestão">Sugestão</option>
+                            <option value="Reclamação">Reclamação</option>
+                            <option value="Orçamento">Orçamento</option>
+                            <option value="Parceria">Parceria</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Mensagem *</label>
+                        <textarea id="message" name="message" class="form-control" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <span id="submitText">Enviar Mensagem</span>
+                        <div id="loadingSpinner" style="display: none;">⏳ Enviando...</div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para envio do formulário usando FormSubmit.co -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.btn-submit');
+            const submitText = document.getElementById('submitText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            // Mostrar loading
+            submitText.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            submitBtn.disabled = true;
+            
+            // Configurar FormSubmit
+            this.action = 'https://formsubmit.co/igormoncao86@gmail.com';
+            this.method = 'POST';
+            
+            // Adicionar campos ocultos para personalização
+            const hiddenFields = `
+                <input type="hidden" name="_subject" value="Novo contato do site - ${document.getElementById('subject').value}">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="https://seusite.com/obrigado.html">
+            `;
+            this.insertAdjacentHTML('beforeend', hiddenFields);
+            
+            // Simular envio (em produção, o formulário seria enviado realmente)
+            setTimeout(() => {
+                statusMessage.textContent = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                statusMessage.className = 'status-message success';
+                
+                // Limpar formulário
+                this.reset();
+                
+                // Restaurar botão
+                submitText.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Rolagem suave para a mensagem de status
+                statusMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 2000);
+        });
+
+        // Validação em tempo real
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() !== '') {
+                    this.style.borderColor = '#10B55D';
+                } else {
+                    this.style.borderColor = '#e8e8e8';
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '#006FC9';
+            });
+        });
+    </script>
+</body>
+</html>
